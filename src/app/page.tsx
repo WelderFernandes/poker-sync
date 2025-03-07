@@ -1,95 +1,94 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+
+import { DashboardHeader } from '@/components/dashboard/dashboard-header'
+import { DashboardStats } from '@/components/dashboard/dashboard-stats'
+import { HandsChart } from '@/components/dashboard/hands-chart'
+import { PlayerStats } from '@/components/dashboard/player-stats'
+import { ProfitablePlayers } from '@/components/dashboard/profitable-players'
+import { RecentGames } from '@/components/dashboard/recent-games'
+import { WorstPlayers } from '@/components/dashboard/worst-players'
+import { Button } from '@/components/ui/button'
+import { Table2 } from 'lucide-react'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { getDashboardStats, type DashboardStats as DashboardStatsType } from "@/lib/stats"
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [stats, setStats] = useState<DashboardStatsType | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        setIsLoading(true)
+
+        // Initialize storage first
+        await fetch('/api/db')
+
+        const dashboardStats = await getDashboardStats()
+        setStats(dashboardStats)
+      } catch (error) {
+        console.error('Error loading dashboard stats:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadStats()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-6 flex justify-center items-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-lg">Carregando estatísticas...</p>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </div>
+    )
+  }
+
+  return (
+    <div className="container mx-auto p-4 md:p-6 space-y-6 md:space-y-8 animate-fade-in">
+      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+        <DashboardHeader />
+        <Button asChild className="animate-slide-in w-full md:w-auto">
+          <Link href="/tables">
+            <Table2 className="mr-2 h-4 w-4" />
+            Gerenciar Mesas
+          </Link>
+        </Button>
+      </div>
+
+      {stats && <DashboardStats stats={stats} />}
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        {stats && <RecentGames games={stats.recentGames} />}
+        {stats && <PlayerStats players={stats.topPlayers} />}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        {stats && <HandsChart hands={stats.popularHands} />}
+        {stats && <WorstPlayers players={stats.worstPlayers} />}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        {stats && (
+          <ProfitablePlayers
+            players={stats.mostProfitablePlayers}
+            title="Jogadores Mais Lucrativos"
+            description="Jogadores com maior lucro em R$"
           />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+        )}
+        {stats && (
+          <ProfitablePlayers
+            players={stats.biggestLosers}
+            title="Maiores Perdedores"
+            description="Jogadores com maior prejuízo em R$"
+            isLosers={true}
           />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        )}
+      </div>
     </div>
-  );
+  )
 }
