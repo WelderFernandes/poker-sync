@@ -17,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import type { PlayerType } from "@/lib/types"
+import Image from "next/image"
 
 interface AddPlayerDialogProps {
   open: boolean
@@ -29,24 +30,24 @@ interface AddPlayerDialogProps {
 
 // Lista de avatares disponíveis
 const AVAILABLE_AVATARS = [
-  "/avatars/avatar-1.png",
-  "/avatars/avatar-2.png",
-  "/avatars/avatar-3.png",
-  "/avatars/avatar-4.png",
-  "/avatars/avatar-5.png",
-  "/avatars/avatar-6.png",
-  "/avatars/avatar-7.png",
-  "/avatars/avatar-8.png",
-  "/avatars/avatar-9.png",
-  "/avatars/avatar-10.png",
-  "/avatars/avatar-11.png",
-  "/avatars/avatar-12.png",
-  "/avatars/avatar-13.png",
-  "/avatars/avatar-14.png",
-  "/avatars/avatar-15.png",
-  "/avatars/avatar-16.png",
-  "/avatars/avatar-17.png",
-  "/avatars/avatar-18.png",
+  "/avatars/01.png",
+  "/avatars/02.png",
+  "/avatars/03.png",
+  "/avatars/04.png",
+  "/avatars/05.png",
+  "/avatars/06.png",
+  "/avatars/07.png",
+  "/avatars/08.png",
+  "/avatars/09.png",
+  "/avatars/10.png",
+  "/avatars/11.png",
+  "/avatars/12.png",
+  "/avatars/13.png",
+  "/avatars/14.png",
+  "/avatars/15.png",
+  "/avatars/16.png",
+  "/avatars/17.png",
+  "/avatars/18.png",
 ]
 
 export function AddPlayerDialog({
@@ -149,7 +150,9 @@ export function AddPlayerDialog({
                         )}
                         onClick={() => setSelectedAvatar(avatar)}
                       >
-                        <img
+                        <Image
+                          width={100}
+                          height={100}
                           src={avatar || "/placeholder.svg"}
                           alt="Avatar"
                           className="w-full h-auto aspect-square object-cover"

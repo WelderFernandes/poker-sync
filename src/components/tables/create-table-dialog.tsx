@@ -83,7 +83,7 @@ export function CreateTableDialog({ open, onOpenChange, onCreateTable }: CreateT
               <Input
                 id="buyInAmount"
                 type="number"
-                min={10}
+                min={5}
                 step={10}
                 value={buyInAmount}
                 onChange={(e) => setBuyInAmount(Number.parseInt(e.target.value))}
