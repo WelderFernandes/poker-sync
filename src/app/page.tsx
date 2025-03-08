@@ -6,7 +6,7 @@ import { DashboardStats } from "@/components/dashboard/dashboard-stats"
 import { RecentGames } from "@/components/dashboard/recent-games"
 import { PlayerStats } from "@/components/dashboard/player-stats"
 import { Button } from "@/components/ui/button"
-import { Table2 } from "lucide-react"
+import { Table2, UserPlus2 } from "lucide-react"
 import Link from "next/link"
 import { getDashboardStats } from "@/lib/stats"
 import type { DashboardStats as DashboardStatsType } from "@/lib/stats"
@@ -56,12 +56,18 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4 md:p-6 space-y-6 md:space-y-8 animate-fade-in">
-      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+      <div className="flex gap-1.5 flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
         <DashboardHeader />
         <Button asChild className="animate-slide-in w-full md:w-auto">
           <Link href="/tables">
             <Table2 className="mr-2 h-4 w-4" />
             Gerenciar Mesas
+          </Link>
+        </Button>
+        <Button variant={"ghost"} asChild className="animate-slide-in w-full md:w-auto">
+          <Link href="/players">
+            <UserPlus2 className="mr-2 h-4 w-4" />
+            Cadastrar jogadores
           </Link>
         </Button>
       </div>
