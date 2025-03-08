@@ -1,9 +1,9 @@
-import { Progress } from '@/components/ui/progress'
+import { Progress } from "@/components/ui/progress"
 
 // Add this helper function at the top of the file, outside the component
 function formatNumber(value: number | undefined): string {
   if (value === undefined || isNaN(value)) {
-    return '0'
+    return "0"
   }
   return value.toString()
 }
@@ -23,3 +23,4 @@ export function TableChips({ totalChips }: TableChipsProps) {
     </div>
   )
 }
+

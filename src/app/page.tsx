@@ -1,41 +1,47 @@
-'use client'
+"use client"
 
-import { DashboardHeader } from '@/components/dashboard/dashboard-header'
-import { DashboardStats } from '@/components/dashboard/dashboard-stats'
-import { HandsChart } from '@/components/dashboard/hands-chart'
-import { PlayerStats } from '@/components/dashboard/player-stats'
-import { ProfitablePlayers } from '@/components/dashboard/profitable-players'
-import { RecentGames } from '@/components/dashboard/recent-games'
-import { WorstPlayers } from '@/components/dashboard/worst-players'
-import { Button } from '@/components/ui/button'
-import { Table2 } from 'lucide-react'
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { getDashboardStats, type DashboardStats as DashboardStatsType } from "@/lib/stats"
+import { useState, useEffect } from "react"
+import { DashboardHeader } from "@/components/dashboard/dashboard-header"
+import { DashboardStats } from "@/components/dashboard/dashboard-stats"
+import { RecentGames } from "@/components/dashboard/recent-games"
+import { PlayerStats } from "@/components/dashboard/player-stats"
+import { Button } from "@/components/ui/button"
+import { Table2 } from "lucide-react"
+import Link from "next/link"
+import { getDashboardStats } from "@/lib/stats"
+import type { DashboardStats as DashboardStatsType } from "@/lib/stats"
+import { HandsChart } from "@/components/dashboard/hands-chart"
+import { ProfitablePlayers } from "@/components/dashboard/profitable-players"
+import { UnpaidPlayersRanking } from "@/components/dashboard/unpaid-players-ranking"
 
 export default function Home() {
   const [stats, setStats] = useState<DashboardStatsType | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    async function loadStats() {
-      try {
-        setIsLoading(true)
+  const loadStats = async () => {
+    try {
+      setIsLoading(true)
 
-        // Initialize storage first
-        await fetch('/api/db')
+      // Initialize storage first
+      await fetch("/api/db")
 
-        const dashboardStats = await getDashboardStats()
-        setStats(dashboardStats)
-      } catch (error) {
-        console.error('Error loading dashboard stats:', error)
-      } finally {
-        setIsLoading(false)
-      }
+      const dashboardStats = await getDashboardStats()
+      setStats(dashboardStats)
+    } catch (error) {
+      console.error("Error loading dashboard stats:", error)
+    } finally {
+      setIsLoading(false)
     }
+  }
 
+  useEffect(() => {
     loadStats()
   }, [])
+
+  const handlePaymentComplete = () => {
+    // Recarregar as estatísticas quando um pagamento for concluído
+    loadStats()
+  }
 
   if (isLoading) {
     return (
@@ -69,7 +75,9 @@ export default function Home() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {stats && <HandsChart hands={stats.popularHands} />}
-        {stats && <WorstPlayers players={stats.worstPlayers} />}
+        {stats && (
+          <UnpaidPlayersRanking unpaidPlayers={stats.unpaidPlayers} onPaymentComplete={handlePaymentComplete} />
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
@@ -92,3 +100,4 @@ export default function Home() {
     </div>
   )
 }
+

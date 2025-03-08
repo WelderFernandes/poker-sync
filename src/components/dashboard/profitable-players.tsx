@@ -95,7 +95,6 @@ export function ProfitablePlayers({
                     : 0
                 }
                 className={`h-2 ${isLosers ? 'bg-red-500/20' : 'bg-green-500/20'}`}
-                indicatorClassName={isLosers ? 'bg-red-500' : 'bg-green-500'}
               />
             </div>
           ))}

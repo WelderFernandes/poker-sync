@@ -1,18 +1,12 @@
-'use client'
+"use client"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { WinRateChart } from '@/components/statistics/win-rate-chart'
-import { ChipsDistributionChart } from '@/components/statistics/chips-distribution-chart'
-import { GameLengthChart } from '@/components/statistics/game-length-chart'
-import { PlayerPerformanceTable } from '@/components/statistics/player-performance-table'
-import { StatisticsHeader } from '@/components/statistics/statistics-header'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { WinRateChart } from "@/components/statistics/win-rate-chart"
+import { ChipsDistributionChart } from "@/components/statistics/chips-distribution-chart"
+import { GameLengthChart } from "@/components/statistics/game-length-chart"
+import { PlayerPerformanceTable } from "@/components/statistics/player-performance-table"
+import { StatisticsHeader } from "@/components/statistics/statistics-header"
 
 export default function StatisticsPage() {
   return (
@@ -36,9 +30,7 @@ export default function StatisticsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-4xl font-bold">24</div>
-                <p className="text-sm text-muted-foreground">
-                  +3 from last month
-                </p>
+                <p className="text-sm text-muted-foreground">+3 from last month</p>
               </CardContent>
             </Card>
 
@@ -49,9 +41,7 @@ export default function StatisticsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-4xl font-bold">87</div>
-                <p className="text-sm text-muted-foreground">
-                  -12 from last month
-                </p>
+                <p className="text-sm text-muted-foreground">-12 from last month</p>
               </CardContent>
             </Card>
 
@@ -71,9 +61,7 @@ export default function StatisticsPage() {
             <Card className="animate-slide-up">
               <CardHeader>
                 <CardTitle>Win Rate by Player</CardTitle>
-                <CardDescription>
-                  Top 5 players by win percentage
-                </CardDescription>
+                <CardDescription>Top 5 players by win percentage</CardDescription>
               </CardHeader>
               <CardContent>
                 <WinRateChart />
@@ -83,9 +71,7 @@ export default function StatisticsPage() {
             <Card className="animate-slide-up">
               <CardHeader>
                 <CardTitle>Chips Distribution</CardTitle>
-                <CardDescription>
-                  Average chips per player over time
-                </CardDescription>
+                <CardDescription>Average chips per player over time</CardDescription>
               </CardHeader>
               <CardContent>
                 <ChipsDistributionChart />
@@ -125,9 +111,7 @@ export default function StatisticsPage() {
               <CardDescription>Game statistics over time</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-center text-muted-foreground py-12">
-                Trend data will appear as more games are played
-              </p>
+              <p className="text-center text-muted-foreground py-12">Trend data will appear as more games are played</p>
             </CardContent>
           </Card>
         </TabsContent>
@@ -135,3 +119,4 @@ export default function StatisticsPage() {
     </div>
   )
 }
+

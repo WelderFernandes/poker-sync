@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
-import type React from 'react'
+import type React from "react"
 
-import { useState } from 'react'
+import { useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -10,26 +10,20 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import type { TableType } from '@/lib/types'
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import type { TableType } from "@/lib/types"
 
 interface CreateTableDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onCreateTable: (
-    table: Omit<TableType, 'id' | 'createdAt' | 'status' | 'totalPot'>,
-  ) => void
+  onCreateTable: (table: Omit<TableType, "id" | "createdAt" | "status" | "totalPot">) => void
 }
 
-export function CreateTableDialog({
-  open,
-  onOpenChange,
-  onCreateTable,
-}: CreateTableDialogProps) {
-  const [name, setName] = useState('')
+export function CreateTableDialog({ open, onOpenChange, onCreateTable }: CreateTableDialogProps) {
+  const [name, setName] = useState("")
   const [maxPlayers, setMaxPlayers] = useState(8)
   const [buyInAmount, setBuyInAmount] = useState(100)
   const [startingChips, setStartingChips] = useState(1000)
@@ -46,7 +40,7 @@ export function CreateTableDialog({
     })
 
     // Reset form
-    setName('')
+    setName("")
     setMaxPlayers(8)
     setBuyInAmount(100)
     setStartingChips(1000)
@@ -57,9 +51,7 @@ export function CreateTableDialog({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Criar Nova Mesa</DialogTitle>
-          <DialogDescription>
-            Configure uma nova mesa de poker para seu jogo.
-          </DialogDescription>
+          <DialogDescription>Configure uma nova mesa de poker para seu jogo.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
@@ -67,13 +59,7 @@ export function CreateTableDialog({
               <Label htmlFor="name" className="text-right">
                 Nome
               </Label>
-              <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="col-span-3"
-                required
-              />
+              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="col-span-3" required />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="maxPlayers" className="text-right">
@@ -100,9 +86,7 @@ export function CreateTableDialog({
                 min={10}
                 step={10}
                 value={buyInAmount}
-                onChange={(e) =>
-                  setBuyInAmount(Number.parseInt(e.target.value))
-                }
+                onChange={(e) => setBuyInAmount(Number.parseInt(e.target.value))}
                 className="col-span-3"
                 required
               />
@@ -117,9 +101,7 @@ export function CreateTableDialog({
                 min={100}
                 step={100}
                 value={startingChips}
-                onChange={(e) =>
-                  setStartingChips(Number.parseInt(e.target.value))
-                }
+                onChange={(e) => setStartingChips(Number.parseInt(e.target.value))}
                 className="col-span-3"
                 required
               />
@@ -133,3 +115,4 @@ export function CreateTableDialog({
     </Dialog>
   )
 }
+

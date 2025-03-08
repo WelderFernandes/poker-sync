@@ -6,7 +6,7 @@ export interface TableType {
   buyInAmount: number // Valor em reais
   startingChips: number // Fichas iniciais por jogador
   totalPot: number // Total arrecadado em reais
-  status: 'active' | 'completed'
+  status: "active" | "completed"
   createdAt: string
   winner?: string
 }
@@ -15,6 +15,9 @@ export interface PlayerType {
   id: string
   tableId: string
   name: string
+  nickname?: string
+  phone?: string
+  pixKey?: string
   chips: number
   buyInPaid: boolean
   avatar: string
@@ -27,6 +30,7 @@ export interface RoundType {
   hand: string
   potSize: number // Em fichas
   timestamp: string
+  cards?: string[] // Cartas da mão vencedora
 }
 
 export interface FinancialSummary {
@@ -35,3 +39,12 @@ export interface FinancialSummary {
   averageBuyIn: number
   highestPot: number
 }
+
+export interface UnpaidDebt {
+  tableId: string
+  tableName: string
+  amount: number
+  date: string
+  playerId: string
+}
+

@@ -1,5 +1,5 @@
 import { getCompletedGames, getPlayers, getRounds, getFinancialSummary } from "@/lib/db"
-import type { TableType, PlayerType, RoundType } from "@/lib/types"
+import type { TableType, PlayerType, RoundType, UnpaidDebt } from "@/lib/types"
 
 // Tipos para estatísticas
 export interface PlayerStats {
@@ -21,6 +21,14 @@ export interface HandStats {
   percentage: number
 }
 
+export interface UnpaidPlayerStats {
+  id: string
+  name: string
+  avatar: string
+  totalDebt: number
+  unpaidGames: UnpaidDebt[]
+}
+
 export interface DashboardStats {
   totalGames: number
   totalPlayers: number
@@ -34,6 +42,7 @@ export interface DashboardStats {
   biggestLosers: PlayerStats[]
   popularHands: HandStats[]
   recentGames: TableType[]
+  unpaidPlayers: UnpaidPlayerStats[]
 }
 
 // Função para obter estatísticas do dashboard
@@ -160,6 +169,42 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, 5)
 
+  // Calcular jogadores com buy-in não pago
+  const unpaidPlayersMap = new Map<string, UnpaidPlayerStats>()
+
+  allPlayers.forEach((player) => {
+    if (!player.buyInPaid) {
+      if (!unpaidPlayersMap.has(player.name)) {
+        unpaidPlayersMap.set(player.name, {
+          id: player.id,
+          name: player.name,
+          avatar: player.avatar,
+          totalDebt: 0,
+          unpaidGames: [],
+        })
+      }
+
+      const unpaidPlayer = unpaidPlayersMap.get(player.name)!
+
+      // Adicionar dívida
+      unpaidPlayer.totalDebt += player.buyInAmount
+
+      // Adicionar jogo à lista de jogos não pagos
+      const gameDate = completedGames.find((g) => g.id === player.tableId)?.createdAt || new Date().toISOString()
+
+      unpaidPlayer.unpaidGames.push({
+        tableId: player.tableId,
+        tableName: player.tableName,
+        amount: player.buyInAmount,
+        date: gameDate,
+        playerId: player.id,
+      })
+    }
+  })
+
+  // Ordenar jogadores com dívidas pelo valor total (maior para menor)
+  const unpaidPlayers = Array.from(unpaidPlayersMap.values()).sort((a, b) => b.totalDebt - a.totalDebt)
+
   return {
     totalGames,
     totalPlayers,
@@ -173,6 +218,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     biggestLosers,
     popularHands: handStats.slice(0, 5),
     recentGames,
+    unpaidPlayers,
   }
 }
 

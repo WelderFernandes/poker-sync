@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Play, Pause, RotateCcw } from 'lucide-react'
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Play, Pause, RotateCcw } from "lucide-react"
 
 interface TableTimerProps {
   isActive: boolean
@@ -38,10 +38,10 @@ export function TableTimer({ isActive }: TableTimerProps) {
     const secs = seconds % 60
 
     return [
-      hours.toString().padStart(2, '0'),
-      minutes.toString().padStart(2, '0'),
-      secs.toString().padStart(2, '0'),
-    ].join(':')
+      hours.toString().padStart(2, "0"),
+      minutes.toString().padStart(2, "0"),
+      secs.toString().padStart(2, "0"),
+    ].join(":")
   }
 
   const toggleTimer = () => {
@@ -57,31 +57,16 @@ export function TableTimer({ isActive }: TableTimerProps) {
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      <div className="text-4xl font-mono font-bold tracking-widest animate-pulse">
-        {formatTime()}
-      </div>
+      <div className="text-4xl font-mono font-bold tracking-widest animate-pulse">{formatTime()}</div>
       <div className="flex space-x-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={toggleTimer}
-          disabled={!isActive}
-        >
-          {isRunning ? (
-            <Pause className="h-4 w-4" />
-          ) : (
-            <Play className="h-4 w-4" />
-          )}
+        <Button variant="outline" size="icon" onClick={toggleTimer} disabled={!isActive}>
+          {isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
         </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={resetTimer}
-          disabled={!isActive || seconds === 0}
-        >
+        <Button variant="outline" size="icon" onClick={resetTimer} disabled={!isActive || seconds === 0}>
           <RotateCcw className="h-4 w-4" />
         </Button>
       </div>
     </div>
   )
 }
+
